@@ -1,54 +1,54 @@
-import React from 'react'; 
-import ReactDOM from 'react-dom'; 
+// import React from 'react'; 
 
-class Test extends React.Component { 
-	constructor(props) 
-	{ 
-		super(props); 
-		this.state = { hello : "World!" }; 
-	} 
 
-	componentWillMount() 
-	{ 
-		console.log("componentWillMount()"); 
-	} 
+// class Test extends React.Component { 
+// 	constructor(props) 
+// 	{ 
+// 		super(props); 
+// 		this.state = { hello : "World!" }; 
+// 	} 
 
-	componentDidMount() 
-	{ 
-		console.log("componentDidMount()"); 
-	} 
+// 	componentWillMount() 
+// 	{ 
+// 		console.log("componentWillMount()"); 
+// 	} 
 
-	changeState() 
-	{ 
-		this.setState({ hello : "Geek!" }); 
-	} 
+// 	componentDidMount() 
+// 	{ 
+// 		console.log("componentDidMount()"); 
+// 	} 
 
-	render() 
-	{ 
-		return ( 
-			<div> 
-			<h1>GeeksForGeeks.org, Hello{ this.state.hello }</h1> 
-			<h2> 
-			<a onClick={this.changeState.bind(this)}>Press Here!</a> 
-			</h2> 
-			</div>); 
-	} 
+// 	changeState() 
+// 	{ 
+// 		this.setState({ hello : "Geek!" }); 
+// 	} 
 
-	shouldComponentUpdate(nextProps, nextState) 
-	{ 
-		console.log("shouldComponentUpdate()"); 
-		return true; 
-	} 
+// 	render() 
+// 	{ 
+// 		return ( 
+// 			<div> 
+// 			<h1>GeeksForGeeks.org, Hello{ this.state.hello }</h1> 
+// 			<h2> 
+// 			<a onClick={this.changeState.bind(this)}>Press Here!</a> 
+// 			</h2> 
+// 			</div>); 
+// 	} 
 
-	componentWillUpdate() 
-	{ 
-		console.log("componentWillUpdate()"); 
-	} 
+// 	shouldComponentUpdate(nextProps, nextState) 
+// 	{ 
+// 		console.log("shouldComponentUpdate()"); 
+// 		return true; 
+// 	} 
 
-	componentDidUpdate() 
-	{ 
-		console.log("componentDidUpdate()"); 
-	} 
-} 
+// 	componentWillUpdate() 
+// 	{ 
+// 		console.log("componentWillUpdate()"); 
+// 	} 
 
-export default Test;
+// 	componentDidUpdate() 
+// 	{ 
+// 		console.log("componentDidUpdate()"); 
+// 	} 
+// } 
+
+// export default Test;
