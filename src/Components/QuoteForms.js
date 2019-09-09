@@ -1,4 +1,5 @@
 import React from "react";
+import formValidator from "../Tools/FormValidator";
 
 class QuoteForms extends React.Component{
 
@@ -10,13 +11,29 @@ class QuoteForms extends React.Component{
                 health: false,
                 finance: false
             },
-            weightChangeDetail: "Weight Change Detail",
-            healthChangeDetail: "Health Change Detail",
-            financeChangeDetail: "Finance Change Detail",
+            formControls:{
+                weightChangeDetail:{
+                    value:"default value",
+                    placeholder:"Weight Change Detail",
+                    valid: false,
+                    touched: false,
+                    validationRules:{
+                        //adding rules here
+                        minLength: 20,
+
+                    }
+                } ,
+
+            },
+
+            // healthChangeDetail: "Health Change Detail",
+            // financeChangeDetail: "Finance Change Detail",
             
 
         };
         this.flagChangeHandler = this.flagChangeHandler.bind(this);
+        this.changeHandler = this.changeHandler.bind(this);
+
 
        
 
@@ -29,26 +46,44 @@ class QuoteForms extends React.Component{
     
     //handle flag state, to show/hide certin sections
     flagChangeHandler= event=> {
-        const {visibilityFlag} = {...this.state};
-        const currentVisibility = visibilityFlag;
-        const tagValue = event.target.value;
+        let {visibilityFlag} = {...this.state};
+        let currentVisibility = visibilityFlag;
+        let tagValue = event.target.value;
         currentVisibility[tagValue] = !(visibilityFlag[tagValue]);
 
         this.setState ({ [visibilityFlag]: currentVisibility});
     }
 
-    textInputHandler = event => {
+    changeHandler = event =>{
         let name = event.target.name;
         let value = event.target.value;
         
+        let updatedControls = {
+            ...this.state.formControls
+        };
+
+        let updatedFormElement = {
+            ...updatedControls[name]
+        };
+
+        // let updatedFormElement = updatedControls[name];
+        updatedFormElement.value = value;
+        updatedFormElement.touched = true;
+        updatedFormElement.valid = formValidator(value, updatedFormElement.validationRules);
+
+        updatedControls[name] = updatedFormElement;
+
         this.setState({
-            ...this.state,
-            [name]:value,
+            formControls: updatedControls,
         });
     }
+
+  
+
+
     formSubmitHandler= (event) => {
         event.preventDefault();
-        console.log(this.state.visibilityFlag, this.state.financeChangeDetail);
+        console.log(this.state);
     }
     
 
@@ -70,11 +105,11 @@ class QuoteForms extends React.Component{
                         { 
                             this.state.visibilityFlag.weight &&
                             <div>
-                                <input type="text" name="weightChangeDetail" value={this.state.weightChangeDetail} onChange={this.textInputHandler}></input>
+                                <input type="text" name="weightChangeDetail" value={this.state.formControls.weightChangeDetail.value} onChange={this.changeHandler}></input>
                             </div>
                         }
         
-                        { 
+                        {/* { 
                             this.state.visibilityFlag.health &&
                             <div>
                                 <input type="text" name="healChangeDetail" value={this.state.healthChangeDetail} onChange={this.textInputHandler}></input>
@@ -85,7 +120,7 @@ class QuoteForms extends React.Component{
                             <div>
                             <input type="text" name="financeChangeDetail" value={this.state.financeChangeDetail} onChange={this.textInputHandler}></input>
                         </div>
-                        }
+                        } */}
                     </div>
 
                     <div>
