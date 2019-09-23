@@ -23,6 +23,20 @@
   color: #61dafb;
 }
 
+.btn-primary {
+  padding: 1rem 1.5rem;
+  font-size: 1.5rem;
+}
+/* .super-btn {
+  background-color: red;
+  color: white;
+  } */
+
+  .super-btn {
+    
+    }
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -31,3 +45,4 @@
     transform: rotate(360deg);
   }
 }
+

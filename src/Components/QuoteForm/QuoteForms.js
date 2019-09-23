@@ -1,7 +1,12 @@
 import React from "react";
-import formValidator from "../Tools/FormValidator";
-import TextInput from "../Utilities/TextInput";
+import formValidator from "../../Tools/FormValidator";
+import TextInput from "../../Utilities/TextInput";
 import './QuoteForms.css';
+
+//items from React-Bootstrap
+import Row from 'react-bootstrap/Row';
+import Container from 'react-bootstrap/Container';
+import Col from 'react-bootstrap/Col';
 
 const tagName = {
     healthOfBiologicalBrothers: "healthOfBiologicalBrothers",
@@ -201,60 +206,80 @@ class QuoteForms extends React.Component {
 
     render() {
 
+        //     <Container>
+        //     <Row>
+        //       <Col></Col>
+        //     </Row>
+
+        //   </Container>
+
         return (
             // section for health, weight, finance changing 
+
+
+
             <div className="Transamerica-LifeInsuranceDemo">
                 <form>
+                    <Container>
+                        {/* FirstSection in Form - question one :  Have you experienced significant changes in Weight, Health, or Finances"? (select all that apply)*/}
 
-                    {/* FirstSection in Form - question one :  Have you experienced significant changes in Weight, Health, or Finances"? (select all that apply)*/}
-                    <div>
                         <div>
-                            <div>Have you experienced significant changes in Weight, Health or Finances ? (select that all apply)</div>
-                            <button value="weight" type="button" onClick={this.flagChangeHandler}>Weight</button>
-                            <button value="health" type="button" onClick={this.flagChangeHandler}>health</button>
-                            <button value="finance" type="button" onClick={this.flagChangeHandler}>finance</button>
+                            <Row>
+                                <div>
+                                    <div>Have you experienced significant changes in Weight, Health or Finances ? (select that all apply)</div>
+                                    <button value="weight" type="button" onClick={this.flagChangeHandler}>Weight</button>
+                                    <button value="health" type="button" onClick={this.flagChangeHandler}>health</button>
+                                    <button value="finance" type="button" onClick={this.flagChangeHandler}>finance</button>
+
+                                </div>
+                            </Row>
+                            {/* Weight Change Detail */}
+
+                            {
+                                this.state.visibilityFlag.weight &&
+                                <div>
+                                    <Row>
+                                        <div>
+                                            <TextInput type="text" name="weightChangeDetail" placeholder={this.state.formControls.weightChangeDetail.placeholder} onChange={this.changeHandler} />
+                                        </div>
+                                        {/* show error of meeting requirement */}
+                                        {(!this.state.formControls.weightChangeDetail.valid && this.state.formControls.weightChangeDetail.touched) ? (<p>Input not fullfill requirement</p>) : null}
+                                    </Row>
+                                </div>
+                            }
+
+
+                            {/* Health Change Detail */}
+                            {
+                                this.state.visibilityFlag.health &&
+                                <div>
+                                    <Row>
+                                        <div>
+                                            <TextInput type="text" name="healthChangeDetail" placeholder={this.state.formControls.healthChangeDetail.placeholder} onChange={this.changeHandler} />
+                                        </div>
+                                        {/* show error of meeting requirement */}
+                                        {(!this.state.formControls.healthChangeDetail.valid && this.state.formControls.healthChangeDetail.touched) ? (<p>Input not fullfill requirement</p>) : null}
+                                    </Row>
+                                </div>
+                            }
+
+                            {/* finance Change Detail */}
+                            {
+                                this.state.visibilityFlag.finance &&
+                                <div>
+                                    <div>
+                                        <TextInput type="text" name="financeChangeDetail" placeholder={this.state.formControls.financeChangeDetail.placeholder} onChange={this.changeHandler} />
+                                    </div>
+                                    {/* show error of meeting requirement */}
+                                    {(!this.state.formControls.financeChangeDetail.valid && this.state.formControls.financeChangeDetail.touched) ? (<p>Input not fullfill requirement</p>) : null}
+                                </div>
+                            }
+
+
 
                         </div>
 
-                        {/* Weight Change Detail */}
-                        {
-                            this.state.visibilityFlag.weight &&
-                            <div>
-                                <div>
-                                    <TextInput type="text" name="weightChangeDetail" placeholder={this.state.formControls.weightChangeDetail.placeholder} onChange={this.changeHandler} />
-                                </div>
-                                {/* show error of meeting requirement */}
-                                {(!this.state.formControls.weightChangeDetail.valid && this.state.formControls.weightChangeDetail.touched) ? (<p>Input not fullfill requirement</p>) : null}
-                            </div>
-                        }
-
-                        {/* Health Change Detail */}
-                        {
-                            this.state.visibilityFlag.health &&
-                            <div>
-                                <div>
-                                    <TextInput type="text" name="healthChangeDetail" placeholder={this.state.formControls.healthChangeDetail.placeholder} onChange={this.changeHandler} />
-                                </div>
-                                {/* show error of meeting requirement */}
-                                {(!this.state.formControls.healthChangeDetail.valid && this.state.formControls.healthChangeDetail.touched) ? (<p>Input not fullfill requirement</p>) : null}
-                            </div>
-                        }
-
-                        {/* finance Change Detail */}
-                        {
-                            this.state.visibilityFlag.finance &&
-                            <div>
-                                <div>
-                                    <TextInput type="text" name="financeChangeDetail" placeholder={this.state.formControls.financeChangeDetail.placeholder} onChange={this.changeHandler} />
-                                </div>
-                                {/* show error of meeting requirement */}
-                                {(!this.state.formControls.financeChangeDetail.valid && this.state.formControls.financeChangeDetail.touched) ? (<p>Input not fullfill requirement</p>) : null}
-                            </div>
-                        }
-
-
-
-                    </div>
+                    </Container>
 
                     {/* SecondSection in Form - question two : Biological siblings  */}
                     <div>
