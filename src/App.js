@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 // Component Import Here
 import QuoteForms from './Components/QuoteForm/QuoteForms';
 import AboutPage from './Components/About/About';
+import Test from './Components/Test';
 
 
 //React-Bootstrap Component Import Here
@@ -86,13 +87,10 @@ function App() {
 
 
         <Route exact path="/" component={QuoteForms} />
-        <Route path="/about" component={AboutPage} />
+        <Route path="/about" component={Test} />
         {/* <Route path="/contact" component={Contact} /> */}
 
-        <QuoteForms/>
-        <QuoteForms/>
-        <QuoteForms/>
-        <QuoteForms/>
+
       </Router>
 
 

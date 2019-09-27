@@ -1,54 +1,45 @@
-// import React from 'react'; 
+import React from 'react';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Form from 'react-bootstrap/Form';
+
+class Test extends React.Component {
+
+    constructor() {
+        super();
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+        console.log(event.target);
+        const data = new FormData(event.target);
+        for (var key of data.keys()) {
+            console.log("key is", key);
+        }
+        for (var value of data.values()) {
+            console.log("value is", value);
+        }
 
 
-// class Test extends React.Component { 
-// 	constructor(props) 
-// 	{ 
-// 		super(props); 
-// 		this.state = { hello : "World!" }; 
-// 	} 
+    }
 
-// 	componentWillMount() 
-// 	{ 
-// 		console.log("componentWillMount()"); 
-// 	} 
-
-// 	componentDidMount() 
-// 	{ 
-// 		console.log("componentDidMount()"); 
-// 	} 
-
-// 	changeState() 
-// 	{ 
-// 		this.setState({ hello : "Geek!" }); 
-// 	} 
-
-// 	render() 
-// 	{ 
-// 		return ( 
-// 			<div> 
-// 			<h1>GeeksForGeeks.org, Hello{ this.state.hello }</h1> 
-// 			<h2> 
-// 			<a onClick={this.changeState.bind(this)}>Press Here!</a> 
-// 			</h2> 
-// 			</div>); 
-// 	} 
-
-// 	shouldComponentUpdate(nextProps, nextState) 
-// 	{ 
-// 		console.log("shouldComponentUpdate()"); 
-// 		return true; 
-// 	} 
-
-// 	componentWillUpdate() 
-// 	{ 
-// 		console.log("componentWillUpdate()"); 
-// 	} 
-
-// 	componentDidUpdate() 
-// 	{ 
-// 		console.log("componentDidUpdate()"); 
-// 	} 
-// } 
-
-// export default Test;
+    render() {
+        return (
+            <Form>
+                <Form.Check
+                    type="switch"
+                    id="custom-switch"
+                    label="Check this switch"
+                />
+                <Form.Check
+                    disabled
+                    type="switch"
+                    label="disabled switch"
+                    id="disabled-custom-switch"
+                />
+            </Form>
+        );
+    }
+}
+export default Test;
