@@ -9,6 +9,28 @@
 
   
 }
+
+input{
+  color:white;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+}
+input::placeholder{
+  color: rgba(255,255,255,0.7);
+}
+
+select{
+  color: white;
+  background: rgba(255, 255, 255, 0.3);
+}
+option{
+  background: grey;
+}
+
+
+
+
+
 .button {
   background-color: rgba(255, 255, 255, 0.2); /* Green */
   border: none;
@@ -27,6 +49,9 @@
 }
 .button-prev {
   border-radius: 50%;
+}
+.button-push{
+  border-radius: 10px;
 }
 .submit-button{
   padding-top: 30px;

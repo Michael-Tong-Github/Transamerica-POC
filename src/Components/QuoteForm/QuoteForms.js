@@ -340,13 +340,13 @@ class QuoteForms extends React.Component {
                                                     {/* three buttons for clicking */}
                                                     <Row>
                                                         <Col >
-                                                            <button value="health" type="button" onClick={this.flagChangeHandler}>health</button>
+                                                            <button className="button button-push" value="health" type="button" onClick={this.flagChangeHandler}>health</button>
                                                         </Col>
                                                         <Col >
-                                                            <button value="weight" type="button" onClick={this.flagChangeHandler}>Weight</button>
+                                                            <button className="button button-push" value="weight" type="button" onClick={this.flagChangeHandler}>Weight</button>
                                                         </Col>
                                                         <Col >
-                                                            <button value="finance" type="button" onClick={this.flagChangeHandler}>finance</button>
+                                                            <button className="button button-push" value="finance" type="button" onClick={this.flagChangeHandler}>finance</button>
                                                         </Col>
                                                     </Row>
                         
