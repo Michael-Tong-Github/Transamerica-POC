@@ -1,22 +1,44 @@
-
-body {
-	background-image: url("../../Assets/background_blurred.png");
-        background-repeat:no-repeat;
-       background-size:cover;
-} 
-
-.content{
-    display: block;
-    height: 90%;
-    top: 100px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: white;
-    z-index: 2;
-    cursor: pointer;
-  
+/* new/converting to */
+.background{
+  background-image: url("../../Assets/background_blurred.png");
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  padding-top: 50px;
 }
+
+.centering-container {
+
+  margin-left:auto;
+  margin-right: auto;
+
+  width: 70%;
+  padding: 20px 20px;
+  background: rgba(0,0,0,0.4);
+  
+  /* text */
+  color: white;
+
+  /* top:10%;
+  bottom: 10%;
+  left: 100px;
+  right: 100px;
+  width: 600px;
+  margin: auto;
+  transform: translate(-50%,-50%);
+  background: rgba(0,0,0,0.6); */
+}
+
+.main-content{
+  
+  color: white;
+}
+
+
+
+
+
+/* old */
 
 .show{
     color: red,
