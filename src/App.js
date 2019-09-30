@@ -57,7 +57,7 @@ function App() {
 
 
         {/* Navbar Component  */}
-        {/* <TANavbar /> */}
+        <TANavbar />
 
 
         <Route exact path="/" component={QuoteForms} />
