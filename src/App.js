@@ -21,7 +21,7 @@ import TANavbar from './Components/Navbar/TANavbar';
 
 // Import Images from Assets
 import TransamericaLogo from './Assets/transamerica-logo-red-pyramid_tcm145-100915.svg';
-
+console.disableYellowBox = true;
 
 function App() {
 

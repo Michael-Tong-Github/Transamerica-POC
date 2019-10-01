@@ -10,6 +10,10 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import { ButtonToolbar, Button } from 'react-bootstrap';
 
+//animation
+import {CSSTransitionGroup,CSSTransition}  from 'react-transition-group';
+
+
 
 
 
@@ -330,14 +334,17 @@ class QuoteForms extends React.Component {
                                 <Col xs={10}>
                                     <div className="center-form">
                                         <form onSubmit={this.formSubmitHandler}>
+                                        
+
                                             {/* page-1 General Health */}
+                                            <CSSTransition in={this.state.currentPageNumber==1 } timeout={500} classNames="my-node"  >
                                             <div className={this.state.currentPageNumber==1 ? "page-1" : "hide-page"}> 
-                                            
                                                 <Container>
                                                     <Row> 
                                                         <label>Have you experienced significant changes in Weight, Health or Finances ? (select that all apply)</label>
                                                     </Row>
                                                     {/* three buttons for clicking */}
+                                                    
                                                     <Row>
                                                         <Col >
                                                             <button className="button button-push" value="health" type="button" onClick={this.flagChangeHandler}>health</button>
@@ -351,42 +358,42 @@ class QuoteForms extends React.Component {
                                                     </Row>
                         
                                                     {/* Health Change Detail */}{/* show error of meeting requirement */}
-                                                    {this.state.visibilityFlag.health &&
-                                                            <Row>
-                                                                <Col>
-                                                                    <TextInput type="text" name="healthChangeDetail" placeholder={this.state.formControls.healthChangeDetail.placeholder} onChange={this.changeHandler} />
-                                                                </Col>
-                                                            </Row>       
-                                                    }
-                                                    {(!this.state.formControls.healthChangeDetail.valid && this.state.formControls.healthChangeDetail.touched) 
-                                                        ? (<Row>Input not fullfill requirement</Row>) : null
-                                                    }
+                                                    <CSSTransition in={this.state.visibilityFlag.health} timeout={500} classNames="my-node" unmountOnExit >
+                                                        <Row>
+                                                            <Col>
+                                                                <TextInput type="text" name="healthChangeDetail" placeholder={this.state.formControls.healthChangeDetail.placeholder} onChange={this.changeHandler} />
+                                                            </Col>
+                                                        </Row>       
+                                                    </CSSTransition>
+                                                    <CSSTransition in={!this.state.formControls.healthChangeDetail.valid && this.state.formControls.healthChangeDetail.touched} timeout={500} classNames="my-node" unmountOnExit >
+                                                        <Row>Input not fullfill requirement</Row>
+                                                    </CSSTransition>
 
                                                     {/* Weight Change Detail */}{/* show error of meeting requirement */}
-                                                    {
-                                                        this.state.visibilityFlag.weight &&
+                                                    <CSSTransition in={this.state.visibilityFlag.weight} timeout={500} classNames="my-node" unmountOnExit >
                                                         <Row>
                                                                 <Col>
                                                                     <TextInput type="text" name="weightChangeDetail" placeholder={this.state.formControls.weightChangeDetail.placeholder} onChange={this.changeHandler} />
                                                                 </Col>
-                                                            </Row>
-                                                    }
-                                                    {(!this.state.formControls.weightChangeDetail.valid && this.state.formControls.weightChangeDetail.touched)
-                                                        ? (<Row>Input not fullfill requirement</Row>) : null
-                                                    }
+                                                        </Row>
+                                                    </CSSTransition>
+                                                    <CSSTransition in={!this.state.formControls.weightChangeDetail.valid && this.state.formControls.weightChangeDetail.touched} timeout={500} classNames="my-node" unmountOnExit >
+                                                        <Row>Input not fullfill requirement</Row>
+                                                    </CSSTransition>
 
                                                     {/* finance Change Detail */}{/* show error of meeting requirement */}
-                                                    {
-                                                        this.state.visibilityFlag.finance &&
+                                                    <CSSTransition in={this.state.visibilityFlag.finance} timeout={500} classNames="my-node" unmountOnExit >
                                                         <Row>
                                                             <Col>
                                                                 <TextInput type="text" name="financeChangeDetail" placeholder={this.state.formControls.financeChangeDetail.placeholder} onChange={this.changeHandler} />
                                                             </Col>
                                                         </Row>
-                                                    }
-                                                    {(!this.state.formControls.financeChangeDetail.valid && this.state.formControls.financeChangeDetail.touched) 
-                                                        ? (<Row>Input not fullfill requirement</Row>) : null
-                                                    }
+                                                    </CSSTransition>
+                                                    <CSSTransition in={!this.state.formControls.financeChangeDetail.valid && this.state.formControls.financeChangeDetail.touched} timeout={500} classNames="my-node" unmountOnExit >
+                                                        <Row>Input not fullfill requirement</Row>
+                                                    </CSSTransition>
+
+
                                                     <Row>
                                                         <label>Do you have any biological siblings?</label>
                                                     </Row>
@@ -397,18 +404,19 @@ class QuoteForms extends React.Component {
                                                         <Col>
                                                             <TextInput type={tagType.number} name={tagName.numberOfBiologicalBrothers} value={this.state.formControls.numberOfBiologicalBrothers.value} placeholder={this.state.formControls.numberOfBiologicalBrothers.placeholder} onChange={this.changeHandler} />
                                                         </Col>
-                                                        
                                                     </Row>
-                                                    {this.state.formControls.numberOfBiologicalBrothers.value > 0 &&
+
+                                                    <CSSTransition in={this.state.formControls.numberOfBiologicalBrothers.value > 0} timeout={500} classNames="my-node" unmountOnExit >
                                                         <Row>
-                                                            <Col>
-                                                                <label>Brothers Siblings' health</label>
-                                                            </Col>
-                                                            <Col>
-                                                                <TextInput type={tagType.text} name={tagName.healthOfBiologicalBrothers} value={this.state.formControls.healthOfBiologicalBrothers.value} placeholder={this.state.formControls.healthOfBiologicalBrothers.placeholder} onChange={this.changeHandler} />
-                                                            </Col>    
+                                                                <Col>
+                                                                    <label>Brothers Siblings' health</label>
+                                                                </Col>
+                                                                <Col>
+                                                                    <TextInput type={tagType.text} name={tagName.healthOfBiologicalBrothers} value={this.state.formControls.healthOfBiologicalBrothers.value} placeholder={this.state.formControls.healthOfBiologicalBrothers.placeholder} onChange={this.changeHandler} />
+                                                                </Col>    
                                                         </Row>
-                                                    }
+                                                    </CSSTransition>
+
                                                     <Row>
                                                         <Col>
                                                             <label>Sister(s)</label>
@@ -417,7 +425,8 @@ class QuoteForms extends React.Component {
                                                             <TextInput type={tagType.number} name={tagName.numberOfBiologicalSisters} value={this.state.formControls.numberOfBiologicalSisters.value} placeholder={this.state.formControls.numberOfBiologicalSisters.placeholder} onChange={this.changeHandler} />
                                                         </Col> 
                                                     </Row>
-                                                    {this.state.formControls.numberOfBiologicalSisters.value > 0 &&
+
+                                                    <CSSTransition in={this.state.formControls.numberOfBiologicalSisters.value > 0} timeout={500} classNames="my-node" unmountOnExit >
                                                         <Row>
                                                             <Col>
                                                                 <label>Sisters Siblings' health</label>
@@ -426,7 +435,8 @@ class QuoteForms extends React.Component {
                                                                 <TextInput type={tagType.text} name={tagName.healthOfBiologicalSisters} value={this.state.formControls.healthOfBiologicalSisters.value} placeholder={this.state.formControls.healthOfBiologicalSisters.placeholder} onChange={this.changeHandler} />
                                                             </Col>      
                                                         </Row>
-                                                    }
+                                                    </CSSTransition>
+
                                                     <Row>
                                                         <label>Biological Parents: </label>
                                                     </Row>
@@ -442,7 +452,8 @@ class QuoteForms extends React.Component {
                                                             </select>
                                                         </Col>
                                                     </Row>
-                                                    {this.state.formControls.biologicalFather.value == "Living" &&
+
+                                                    <CSSTransition in={this.state.formControls.biologicalFather.value == "Living"} timeout={500} classNames="my-node" unmountOnExit >
                                                         <Row>
                                                             <Col>
                                                                 <label>Father's general health</label>
@@ -452,7 +463,7 @@ class QuoteForms extends React.Component {
                                                             </Col>
                                                             
                                                         </Row>
-                                                    }
+                                                    </CSSTransition>
 
                                                     <Row>
                                                         <Col>
@@ -466,7 +477,7 @@ class QuoteForms extends React.Component {
                                                             </select>
                                                         </Col>
                                                     </Row>
-                                                    {this.state.formControls.biologicalMother.value == "Living" &&
+                                                    <CSSTransition in={this.state.formControls.biologicalMother.value == "Living"} timeout={500} classNames="my-node" unmountOnExit >
                                                         <Row>
                                                             <Col>
                                                                 <label>Mother's general health</label>
@@ -475,11 +486,14 @@ class QuoteForms extends React.Component {
                                                                 <TextInput name={tagName.healthOfBiologicalMother} placeholder={this.state.formControls.healthOfBiologicalMother.placeholder} value={this.state.formControls.healthOfBiologicalMother.value} onChange={this.changeHandler} />
                                                             </Col>
                                                         </Row>
-                                                    }
+                                                    </CSSTransition>
+                                                    
                                                 </Container>
                                             </div>
-                                            
+                                            </CSSTransition>   
+
                                             {/* page-2 Activities */}
+                                            <CSSTransition in={this.state.currentPageNumber==2 } timeout={500} classNames="my-node" >
                                             <div className={this.state.currentPageNumber==2 ? "page-2" : "hide-page"}>
                                                 <Container>
                                                     <Row>
@@ -535,18 +549,19 @@ class QuoteForms extends React.Component {
                                                             </label>
                                                         </Col>
                                                     </Row>
-                                                    {this.state.visibilityFlag.military &&
+                                                    <CSSTransition in={this.state.visibilityFlag.military} timeout={500} classNames="my-node" unmountOnExit >
                                                         <Row>
                                                             <TextInput type={tagType.text} name={tagName.militaryExperience} placeholder={this.state.formControls.militaryExperience.placeholder} onChange={this.changeHandler} />
                                                         </Row>
-                                                    }
+                                                    </CSSTransition>
 
                                                     
                                                 </Container>              
                                             </div>
-
+                                            </CSSTransition> 
                                             
                                             {/* page-3 Drugs/Alcohol/Tobacco */}
+                                            <CSSTransition in={this.state.currentPageNumber==3 } timeout={500} classNames="my-node" >
                                             <div className={this.state.currentPageNumber==3 ? "page-3" : "hide-page"}>
                                                 <Container>
                                                     <Row>
@@ -579,21 +594,23 @@ class QuoteForms extends React.Component {
                                                             </select>
                                                         </Col>
                                                     </Row>
-                                                    {this.state.visibilityFlag.drugUsage &&
+                                                    <CSSTransition in={this.state.visibilityFlag.drugUsage} timeout={500} classNames="my-node" unmountOnExit >
                                                         <Row>
                                                             <Col><label>please indicate what drugs you have used in last 5 years: </label></Col>
                                                             <Col>
                                                                 <TextInput type={tagType.text} name={tagName.drugUseLast5Years} placeholder={this.state.formControls.drugUseLast5Years.placeholder} onChange={this.changeHandler} />
                                                             </Col>
                                                         </Row>
-                                                    }
+                                                    </CSSTransition>
 
 
 
                                                 </Container>
                                             </div>
+                                            </CSSTransition> 
 
                                             {/* page-4 Health */}
+                                            <CSSTransition in={this.state.currentPageNumber==4 } timeout={500} classNames="my-node" >
                                             <div className={this.state.currentPageNumber==4 ? "page-4" : "hide-page"}>
                                                 <Container>
                                                     <Row>
@@ -624,15 +641,17 @@ class QuoteForms extends React.Component {
                                                             </label>
                                                         </Col>
                                                     </Row>
-                                                    {this.state.visibilityFlag.diagnose &&
+                                                    <CSSTransition in={this.state.visibilityFlag.diagnose} timeout={500} classNames="my-node" unmountOnExit >
                                                         <Row>
                                                             <TextInput type={tagType.text} name={tagName.diagnosedIssue} placeholder={this.state.formControls.diagnosedIssue.placeholder} onChange={this.changeHandler} />
                                                         </Row>
-                                                    }
+                                                    </CSSTransition>
                                                 </Container>
                                             </div>
-                                            
+                                            </CSSTransition> 
+
                                             {/* page-5 Medications */}
+                                            <CSSTransition in={this.state.currentPageNumber==5 } timeout={500} classNames="my-node" >
                                             <div className={this.state.currentPageNumber==5 ? "page-5" : "hide-page"}>
                                                 <Container>
                                                     <Row>
@@ -677,6 +696,7 @@ class QuoteForms extends React.Component {
                                                     {this.state.medicationHistory.map((obj, idx) => {
                                                             let medicationId = `Medication-${idx}`;
                                                             return (
+                                                               
                                                                 <Row key={idx}>
                                                                     <Col>
                                                                         <label key={medicationId}>Medication #{idx} &nbsp;</label>
@@ -685,18 +705,21 @@ class QuoteForms extends React.Component {
                                                                         <input type="text" name={medicationId} placeholder={obj.detail } size="35"/>  
                                                                     </Col>
                                                                 </Row>
+
                                                             )
                                                         })
                                                     }
                                                     <Row>
                                                         <Col>
-                                                            <button type="button" onClick={this.addMedicationHistory}>add missing history</button>
+                                                            <button className="button button-push" type="button" onClick={this.addMedicationHistory}>add missing history</button>
                                                         </Col>
                                                     </Row>
                                                 </Container>
                                             </div>
-                                            
+                                            </CSSTransition> 
+
                                             {/* page-6 Conditions */}
+                                            <CSSTransition in={this.state.currentPageNumber==6 } timeout={500} classNames="my-node" >
                                             <div className={this.state.currentPageNumber==6 ? "page-6" : "hide-page"}>
                                                 <Container>
                                                     <Row>
@@ -883,7 +906,7 @@ class QuoteForms extends React.Component {
                                                     </Row>
 
                                                     {/* if irregularHeartBeat Clicked */}
-                                                    {this.state.visibilityFlag.irregularHeartBeat &&
+                                                    <CSSTransition in={this.state.visibilityFlag.irregularHeartBeat} timeout={500} classNames="my-node" unmountOnExit >
                                                         <Container>
                                                             <Row>
                                                                 <label>What type of symptom(s) ? please select all</label>
@@ -928,10 +951,11 @@ class QuoteForms extends React.Component {
                                                             </Row>
                                                                 
                                                         </Container>
+                                                        </CSSTransition>
                                                     }
 
                                                     {/* if hospitalization is clicked in irregular heatbeat */}
-                                                    {this.state.visibilityFlag.irregularHeartBeatHospitalized &&
+                                                    <CSSTransition in={this.state.visibilityFlag.irregularHeartBeatHospitalized} timeout={500} classNames="my-node" unmountOnExit >
                                                         <Container>
                                                             <Row>
                                                                 <Col>Hospitalized From <input type="date" /> to <input type="date" /></Col>
@@ -948,17 +972,18 @@ class QuoteForms extends React.Component {
                                                                 <Col>Treatments: <input className="underlineText" type="text" /></Col>
                                                             </Row>
                                                         </Container>
-                                                    }
+                                                        </CSSTransition>
 
+
+                                                        <CSSTransition in={this.state.visibilityFlag.heartAttack} timeout={500} classNames="my-node" unmountOnExit >
                                                     {/* expand if  Heart Attack clicked */}
-                                                    {this.state.visibilityFlag.heartAttack &&
                                                         <Container>
                                                             <Row>skipped for now </Row>
                                                         </Container>
-                                                    }
-
+                                                        </CSSTransition>
+                                                    
+                                                    <CSSTransition in={this.state.visibilityFlag.pacemaker} timeout={500} classNames="my-node" unmountOnExit >
                                                     {/* expand if packmaker clicked */}
-                                                    {this.state.visibilityFlag.pacemaker &&
                                                         <Container>
                                                             <Row>
                                                                 <Col>
@@ -1009,21 +1034,27 @@ class QuoteForms extends React.Component {
                                                                 </Col>
                                                             </Row>
                                                         </Container>
-                                                    }
+                                                        </CSSTransition>
+                                                    
                                                     <div className="submit-button">
                                                         <button className="button">Submit</button>
                                                     </div>
                                                 </Container>
                                             </div>
+                                            </CSSTransition> 
                                         </form>
                                     </div>
                                 </Col>
+                                
+                                            
                                 <Col xs={1}>
                                     <div className="right-button">
                                         <button className="button button-next " onClick={this.pageHandler} value="nextPage">Next</button>
                                     </div>
                                 </Col>
                             </Row>
+                                
+                            
                         </div>
                     </Container>
                 </div>
