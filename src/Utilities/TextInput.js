@@ -4,9 +4,10 @@ import './TextInput.css';
 
 const TextInput = (props) => {
 
+    let width = props.placeholder.length;
     return (
         // <div className="form-group">
-            <input {...props} />
+            <input {...props} size={width}/>
         // </div>
     );
 
