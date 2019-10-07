@@ -34,8 +34,11 @@ const tagName = {
     nicoteneLast5Years: "nicoteneLast5Years",
     drugUseLast5Years: "drugUseLast5Years",
     diagnosedIssue: "diagnosedIssue",
-
-
+    typeOfNicoteneUse: "typeOfNicoteneUse",
+    useOfFrequency: "useOfFrequency",
+    addMoreConditions: "addMoreConditions",
+    haveBiologicalSiblings: "haveBiologicalSiblings",
+    nonPrescriptionLast5Years: "nonPrescriptionLast5Years"
 };
 
 const tagType = {
@@ -69,12 +72,16 @@ class QuoteForms extends React.Component {
                 irregularHeartBeatHospitalized: false,
                 heartAttack: false,
                 pacemaker: false,
+                nicoteneLast5Years: false,
+                addMoreConditions: false,
+                haveBiologicalSiblings: false,
+                nonPrescriptionLast5Years: false,
+
 
                 // biologicalSiblings: false,
             },
             medicationHistory: [
-                { detail: "the first detail" },
-                { detail: "the second detail" }
+                { perscription: "" },
 
             ],
             formControls: {
@@ -211,25 +218,41 @@ class QuoteForms extends React.Component {
                 },
                 drinkPerWeek: {
                     value: "",
-                    placeholder: "Drink per week",
+                    placeholder: "",
                     valid: false,
                     touched: false,
                     validationRules: {
-
+                        
                     }
                 },
-                nicoteneLast5Years: {
+                typeOfNicoteneUse: {
                     value: "",
-                    placeholder: "Nicotine usage ",
+                    placeholder: "",
                     valid: false,
                     touched: false,
                     validationRules: {
-
+                    }
+                },
+                useOfFrequency: {
+                    value: "",
+                    placeholder: "",
+                    valid: false,
+                    touched: false,
+                    validationRules: {
                     }
                 },
                 drugUseLast5Years: {
                     value: "",
                     placeholder: "please indicate your prescription ",
+                    valid: false,
+                    touched: false,
+                    validationRules: {
+
+                    }
+                },
+                nonPrescriptionLast5Years: {
+                    value: "",
+                    placeholder: "",
                     valid: false,
                     touched: false,
                     validationRules: {
@@ -258,6 +281,7 @@ class QuoteForms extends React.Component {
         this.pageHandler = this.pageHandler.bind(this);
         this.generalHealthChangeHandler = this.generalHealthChangeHandler.bind(this);
         this.flagToggleSwitchHandler = this.flagToggleSwitchHandler.bind(this);
+        this.removeMedicationHistory = this.removeMedicationHistory.bind(this);
         
 
     }
@@ -270,6 +294,7 @@ class QuoteForms extends React.Component {
     //handle flag state, to show/hide certin sections
 
     flagChangeHandler = event => {
+        event.preventDefault();
 
         // console.log(event);
         // console.log(event.target);
@@ -283,11 +308,10 @@ class QuoteForms extends React.Component {
         this.setState({ [visibilityFlag]: currentVisibility });
     }
 
-    flagToggleSwitchHandler(event){
-
+    flagToggleSwitchHandler(tagValue){
+        
         let { visibilityFlag } = { ...this.state };
         let currentVisibility = visibilityFlag;
-        let tagValue = "military";
         currentVisibility[tagValue] = !(visibilityFlag[tagValue]);
 
         this.setState({ [visibilityFlag]: currentVisibility });
@@ -327,10 +351,48 @@ class QuoteForms extends React.Component {
 
     addMedicationHistory = (event) => {
         event.preventDefault();
+        
         // console.log("seccess");
+
         this.setState((prevState) => ({
-            medicationHistory: [...prevState.medicationHistory, { detail: "" }],
+            medicationHistory: [...prevState.medicationHistory, { perscription: "" }],
         }));
+    }
+
+
+    removeMedicationHistory = (idx, event) => {
+        event.preventDefault();
+        // console.log(idx,event);
+
+        // console.log(this.state.medicationHistory);
+
+        let currentState = this.state.medicationHistory;
+        currentState.splice(idx,1);
+
+        this.setState({
+            medicationHistory: currentState,
+        });
+        
+
+    }
+
+    // medicationHistory: [
+    //     { perscription: "" },
+
+    // ],
+
+    handleAdditionalMedication=(idx,event) =>{
+        let Content = this.state.medicationHistory;
+        Content[idx].perscription=event.target.value;
+
+        // this.setState((prevState) => ({
+        //     medicationHistory: [...Content],
+        // }));
+        this.setState({
+            medicationHistory: Content,
+        });
+
+
     }
 
     pageHandler = (event) => {
@@ -365,11 +427,7 @@ class QuoteForms extends React.Component {
                     <Container>
                         <div className="centering-container">
                             <Row>
-                                {/* left arrow */}
-                                <Col xs={1} className="noPadding">
-                                        <button className="button button-prev" onClick={this.pageHandler} value="previousPage"><i className="left"></i></button>
-
-                                </Col>
+                                
                                
                                 <Col xs={10} className="CenterFormRow">
                                     <div className="center-form">
@@ -387,9 +445,9 @@ class QuoteForms extends React.Component {
                                                     
                                                     <Row >
                                                         <Col >
-                                                            <button className="button button-push" value="health" type="button" onClick={this.flagChangeHandler}>Health</button>
+                                                            <button className={this.state.visibilityFlag.health? "button button-push-after" :"button button-push"} value="health" type="button" onClick={this.flagChangeHandler}>Health</button>
                                                                 {/* Health Change Detail */}{/* show error of meeting requirement */}
-                                                                <CSSTransition in={this.state.visibilityFlag.health} timeout={500} classNames="my-node" unmountOnExit >
+                                                                {/* <CSSTransition in={this.state.visibilityFlag.health} timeout={500} classNames="my-node" unmountOnExit >
                                                                     <Row>
                                                                         <Col>
                                                                             <TextInput type="text" name="healthChangeDetail" placeholder={this.state.formControls.healthChangeDetail.placeholder} onChange={this.changeHandler} />
@@ -399,12 +457,12 @@ class QuoteForms extends React.Component {
                                                                 </CSSTransition>
                                                                 <CSSTransition in={!this.state.formControls.healthChangeDetail.valid && this.state.formControls.healthChangeDetail.touched} timeout={500} classNames="my-node" unmountOnExit >
                                                                     <Row>Input not fullfill requirement</Row>
-                                                                </CSSTransition>
+                                                                </CSSTransition> */}
                                                         </Col>
                                                         <Col >
-                                                            <button className="button button-push" value="weight" type="button" onClick={this.flagChangeHandler}>Weight</button>
+                                                            <button className={this.state.visibilityFlag.weight? "button button-push-after" :"button button-push"} value="weight" type="button" onClick={this.flagChangeHandler}>Weight</button>
                                                                 {/* Weight Change Detail */}{/* show error of meeting requirement */}
-                                                                <CSSTransition in={this.state.visibilityFlag.weight} timeout={500} classNames="my-node" unmountOnExit >
+                                                                {/* <CSSTransition in={this.state.visibilityFlag.weight} timeout={500} classNames="my-node" unmountOnExit >
                                                                     <Row>
                                                                             <Col>
                                                                                 <TextInput type="text" name="weightChangeDetail" placeholder={this.state.formControls.weightChangeDetail.placeholder} onChange={this.changeHandler} />
@@ -414,12 +472,12 @@ class QuoteForms extends React.Component {
                                                                 </CSSTransition>
                                                                 <CSSTransition in={!this.state.formControls.weightChangeDetail.valid && this.state.formControls.weightChangeDetail.touched} timeout={500} classNames="my-node" unmountOnExit >
                                                                     <Row>Input not fullfill requirement</Row>
-                                                                </CSSTransition>
+                                                                </CSSTransition> */}
                                                         </Col>
                                                         <Col >
-                                                            <button className="button button-push" value="finance" type="button" onClick={this.flagChangeHandler}>Finance</button>
+                                                            <button className={this.state.visibilityFlag.finance? "button button-push-after" :"button button-push"} value="finance" type="button" onClick={this.flagChangeHandler}>Finance</button>
                                                                 {/* finance Change Detail */}{/* show error of meeting requirement */}
-                                                                <CSSTransition in={this.state.visibilityFlag.finance} timeout={500} classNames="my-node" unmountOnExit >
+                                                                {/* <CSSTransition in={this.state.visibilityFlag.finance} timeout={500} classNames="my-node" unmountOnExit >
                                                                     <Row>
                                                                         <Col>
                                                                             <TextInput type="text" name="financeChangeDetail" placeholder={this.state.formControls.financeChangeDetail.placeholder} onChange={this.changeHandler} />
@@ -430,62 +488,66 @@ class QuoteForms extends React.Component {
                                                                 </CSSTransition>
                                                                 <CSSTransition in={!this.state.formControls.financeChangeDetail.valid && this.state.formControls.financeChangeDetail.touched} timeout={500} classNames="my-node" unmountOnExit >
                                                                     <Row>Input not fullfill requirement</Row>
-                                                                </CSSTransition>
+                                                                </CSSTransition> */}
                                                         </Col>
                                                     </Row>
-                        
-
-
-
 
                                                     <Row style={{paddingTop:20}}>
                                                         <label>Do you have any biological siblings?</label>
+                                                        <Switch value={tagName.haveBiologicalSiblings} checked={this.state.visibilityFlag.haveBiologicalSiblings} onChange={(e) => this.flagToggleSwitchHandler("haveBiologicalSiblings",e)} />
                                                     </Row>
-                                                    <Row className="label-input-left">
-                                                        <Col>
-                                                            <label>Brother(s)</label>  
-                                                            <TextInput type={tagType.number} name={tagName.numberOfBiologicalBrothers} value={this.state.formControls.numberOfBiologicalBrothers.value} placeholder={this.state.formControls.numberOfBiologicalBrothers.placeholder} onChange={this.changeHandler} />
-                                                            
-                                                        </Col>
-                                                    </Row>
-
-                                                    <CSSTransition in={this.state.formControls.numberOfBiologicalBrothers.value > 0} timeout={500} classNames="my-node" unmountOnExit >
-                                                        <Row className="label-input-left" style={{paddingLeft:30}}>
-                                                                <label>Do they have any common health condition below?</label>
-                                                                <Row>
-                                                                    { generalHealthIssues.map( (issue, idx) => {
-                                                                        let checkBoxName=`HealthIssue-${idx}`
-                                                                        return(
-                                                                            <Row className="checkbox" key={idx} >
-                                                                                {/* <input   type="checkbox"  name={checkBoxName} checked={this.state.GeneralHealthIssues.includes(issue)} onChange={this.handleGeneralHealthIssues} /> */}
-                                                                                <label >
-                                                                                <input type="checkbox" value={issue} name={checkBoxName} checked={this.state.GeneralHealthIssues.includes(issue)} onChange={(e)=> this.generalHealthChangeHandler(idx,e)} />
-                                                                                {issue}
-                                                                                </label>
-                                                                            </Row>
-                                                                        )})
-                                                                    }
-                                                                </Row>
-                                                                    <label >Others that you want to mention?
-                                                                    <TextInput type={tagType.text} name={tagName.healthOfBiologicalBrothers} value={this.state.formControls.healthOfBiologicalBrothers.value} placeholder={this.state.formControls.healthOfBiologicalBrothers.placeholder} onChange={this.changeHandler} />
-                                                                    </label>
+                                                    <CSSTransition in={this.state.visibilityFlag.haveBiologicalSiblings} timeout={500} classNames="my-node" unmountOnExit >
+                                                        <div>
+                                                        <Row className="label-input-left">
+                                                            <Col>
+                                                                <label>Brother(s)</label>  
+                                                                <TextInput type={tagType.number} name={tagName.numberOfBiologicalBrothers} value={this.state.formControls.numberOfBiologicalBrothers.value} placeholder={this.state.formControls.numberOfBiologicalBrothers.placeholder} onChange={this.changeHandler} />
+                                                                
+                                                            </Col>
                                                         </Row>
-                                                    </CSSTransition>
 
-                                                    <Row className="label-input-left">
-                                                        <Col>
-                                                            <label>Sister(s)</label>
-                                                            <TextInput type={tagType.number} name={tagName.numberOfBiologicalSisters} value={this.state.formControls.numberOfBiologicalSisters.value} placeholder={this.state.formControls.numberOfBiologicalSisters.placeholder} onChange={this.changeHandler} />
-                                                        </Col> 
-                                                    </Row>
-
-                                                    <CSSTransition in={this.state.formControls.numberOfBiologicalSisters.value > 0} timeout={500} classNames="my-node" unmountOnExit >
-                                                        <Row>
-                                                            <Col className="label-input-left" style={{paddingLeft:30}}>
-                                                                <label>Sisters Siblings' health</label>
-                                                                <TextInput type={tagType.text} name={tagName.healthOfBiologicalSisters} value={this.state.formControls.healthOfBiologicalSisters.value} placeholder={this.state.formControls.healthOfBiologicalSisters.placeholder} onChange={this.changeHandler} />
-                                                            </Col>      
+                                                        <CSSTransition in={this.state.formControls.numberOfBiologicalBrothers.value > 0} timeout={500} classNames="my-node" unmountOnExit >
+                                                            <Row className="label-input-left" style={{paddingLeft:30}}>
+                                                                    <label>Do they have any common health condition below?</label>
+                                                                    <Row>
+                                                                        { generalHealthIssues.map( (issue, idx) => {
+                                                                            let checkBoxName=`HealthIssue-${idx}`
+                                                                            return(
+                                                                                <Row className="checkbox" key={idx} >
+                                                                                    {/* <input   type="checkbox"  name={checkBoxName} checked={this.state.GeneralHealthIssues.includes(issue)} onChange={this.handleGeneralHealthIssues} /> */}
+                                                                                    <label >
+                                                                                    <input type="checkbox" value={issue} name={checkBoxName} checked={this.state.GeneralHealthIssues.includes(issue)} onChange={(e)=> this.generalHealthChangeHandler(idx,e)} />
+                                                                                    {issue}
+                                                                                    </label>
+                                                                                </Row>
+                                                                            )})
+                                                                        }
+                                                                    </Row>
+                                                                        <label >Others that you want to mention?
+                                                                        <TextInput type={tagType.text} name={tagName.healthOfBiologicalBrothers} value={this.state.formControls.healthOfBiologicalBrothers.value} placeholder={this.state.formControls.healthOfBiologicalBrothers.placeholder} onChange={this.changeHandler} />
+                                                                        </label>
+                                                            </Row>
+                                                        </CSSTransition>
+                                                        
+                                                       
+                                                        <Row className="label-input-left">
+                                                            <Col>
+                                                                <label>Sister(s)</label>
+                                                                <TextInput type={tagType.number} name={tagName.numberOfBiologicalSisters} value={this.state.formControls.numberOfBiologicalSisters.value} placeholder={this.state.formControls.numberOfBiologicalSisters.placeholder} onChange={this.changeHandler} />
+                                                            </Col> 
                                                         </Row>
+
+                                                        <CSSTransition in={this.state.formControls.numberOfBiologicalSisters.value > 0} timeout={500} classNames="my-node" unmountOnExit >
+                                                            <Row>
+                                                                <Col className="label-input-left" style={{paddingLeft:30}}>
+                                                                    <label>Sisters Siblings' health</label>
+                                                                    <TextInput type={tagType.text} name={tagName.healthOfBiologicalSisters} value={this.state.formControls.healthOfBiologicalSisters.value} placeholder={this.state.formControls.healthOfBiologicalSisters.placeholder} onChange={this.changeHandler} />
+                                                                </Col>      
+                                                            </Row>
+                                                        </CSSTransition>
+
+                                                    </div>
+                                                    
                                                     </CSSTransition>
 
                                                     <Row>
@@ -567,19 +629,31 @@ class QuoteForms extends React.Component {
                                                     <Row>
                                                         <Col>
                                                             <label>
-                                                            <input type="checkbox" name="Rock/activity-4" value="Rock/MountainClimbing" />
+                                                            <input type="checkbox" name="activity-4" value="Rock/MountainClimbing" />
                                                             Rock/Mountain Climbing</label>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row>
+                                                        <Col>
+                                                            <label>
+                                                            <input type="checkbox" name="activity-5" value="OtherActibities" />
+                                                            Other activities such as: Rodeos, Zorbing, Bobsledding, etc...</label>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row>
+                                                        <Col>
+                                                            <label>
+                                                            <input type="checkbox" name="activity-6" value="Racing" />
+                                                            Any kind of racing? Like Car racing, or other motorsports etc...</label>
                                                         </Col>
                                                     </Row>
                                                     <Row>
                                                         <label>Do you have any other activities that not listed above?</label>
                                                     </Row>
                                                     <Row style={{paddingBottom:20}}>
-                                                        <TextInput type={tagType.text} name={tagName.otherActivities} value={this.state.formControls.otherActivities.value} placeholder={this.state.formControls.otherActivities.placeholder} onChange={this.changeHandler} />
+                                                        <input type={tagType.text} />
                                                     </Row>
-                                                    <Row style={{paddingBottom:20}}>
-                                                        <TextInput type={tagType.text} name={tagName.otherRacingActivities} value={this.state.formControls.otherRacingActivities.value} placeholder={this.state.formControls.otherRacingActivities.placeholder} onChange={this.changeHandler} />
-                                                    </Row>
+                                                    
                                                     <Row>
                                                         <Col>
                                                             <label>Are you in the military?</label>
@@ -588,7 +662,7 @@ class QuoteForms extends React.Component {
                                                             <label className="switch" >
                                                                 {/* <input type="checkbox" value="military" onClick={this.flagChangeHandler} />
                                                                 <span className="slider" /> */}
-                                                                <Switch value="military" checked={this.state.visibilityFlag.military} onChange={this.flagToggleSwitchHandler} />
+                                                                <Switch value="military" checked={this.state.visibilityFlag.military} onChange={(e) => this.flagToggleSwitchHandler("military",e)} />
                                                                 
                                                             </label>
                                                         </Col>
@@ -609,44 +683,75 @@ class QuoteForms extends React.Component {
                                             <div className={this.state.currentPageNumber==3 ? "page-3" : "hide-page"}>
                                                 <Container>
                                                     <Row>
-                                                        <label>Discribe your drugs, alcohol and nicotene use:</label>
+                                                        <label>Discribe your drugs, alcohol and non-prescription drug use:</label>
                                                     </Row>
                                                     <Row>
-                                                        <Col>
-                                                            <label>Drinks per week?</label>
-                                                        </Col>
-                                                        <Col>
+                                                        <Col >
+                                                            <label >Drinks per week?
                                                             <TextInput type={tagType.number} name={tagName.drinkPerWeek} placeholder={this.state.formControls.drinkPerWeek.placeholder} onChange={this.changeHandler} />
+                                                            </label>
                                                         </Col>
                                                     </Row>
                                                     <Row>
                                                         <Col>
-                                                            <label>Nocotine use in last 5 years</label>
-                                                        </Col>
-                                                        <Col>
-                                                            <TextInput type={tagType.text} name={tagName.nicoteneLast5Years} placeholder={this.state.formControls.nicoteneLast5Years.placeholder} onChange={this.changeHandler} />
-                                                        </Col>
-                                                    </Row>
-                                                    <Row>
-                                                        <Col>
-                                                            <label>Drug user in last 5 years</label>
-                                                        </Col>
-                                                        <Col>
-                                                            <select onChange={this.flagChangeHandler} >
-                                                                <option value="drugUsage">no</option>
-                                                                <option value="drugUsage">yes</option>
-                                                            </select>
+                                                            <label>Nicotene use in last 5 years</label>
+                                                            <label className="switch" >
+                                                            <Switch value="nicoteneLast5Years" checked={this.state.visibilityFlag.nicoteneLast5Years} onChange={(e) => this.flagToggleSwitchHandler("nicoteneLast5Years",e)} />
+                                                            </label>
                                                         </Col>
                                                     </Row>
-                                                    <CSSTransition in={this.state.visibilityFlag.drugUsage} timeout={500} classNames="my-node" unmountOnExit >
+                                                    <CSSTransition in={this.state.visibilityFlag.nicoteneLast5Years} timeout={500} classNames="my-node" unmountOnExit >
                                                         <Row>
-                                                            <Col><label>please indicate what drugs you have used in last 5 years: </label></Col>
-                                                            <Col>
-                                                                <TextInput type={tagType.text} name={tagName.drugUseLast5Years} placeholder={this.state.formControls.drugUseLast5Years.placeholder} onChange={this.changeHandler} />
+                                                            <Col className="label-input-left">
+                                                                <label>Type of nicotene use: </label>
+                                                                    <select name={tagName.typeOfNicoteneUse} value={this.state.formControls.typeOfNicoteneUse.value} onChange={this.changeHandler}  >
+                                                                        <option name={tagName.typeOfNicoteneUse} value="" ></option>
+                                                                        <option name={tagName.typeOfNicoteneUse} value="Cigar" >Cigar</option>
+                                                                        <option name={tagName.typeOfNicoteneUse} value="Cigarrettes">Cigarrettes</option>
+                                                                        <option name={tagName.typeOfNicoteneUse} value="Marjuana">Marjuana</option>
+                                                                    </select>
                                                             </Col>
                                                         </Row>
                                                     </CSSTransition>
+                                                    <CSSTransition in={this.state.formControls.typeOfNicoteneUse.value != ""} timeout={500} classNames="my-node" unmountOnExit >
+                                                            <Row>
+                                                                <Col className="label-input-left">
+                                                                    <label>Use of frequency:</label>
+                                                                        <select name={tagName.useOfFrequency} value={this.state.formControls.useOfFrequency.value} onChange={this.changeHandler}  >
+                                                                            <option name={tagName.useOfFrequency} value="" ></option>
+                                                                            <option name={tagName.useOfFrequency} value="Daily" >Daily</option>
+                                                                            <option name={tagName.useOfFrequency} value="1-2 per week">1-2 per week</option>
+                                                                            <option name={tagName.useOfFrequency} value="1 per month">1 per month</option>
+                                                                        </select>
+                                                                </Col>
+                                                            </Row>
+                                                    </CSSTransition>
 
+                                                    <Row>
+                                                        <Col>
+                                                            <label>Non-prescription use in last 5 years</label>
+                                                            <label className="switch" >
+                                                            <Switch value="nonPrescriptionLast5Years" checked={this.state.visibilityFlag.nonPrescriptionLast5Years} onChange={(e) => this.flagToggleSwitchHandler("nonPrescriptionLast5Years",e)} />
+                                                            </label>
+                                                        </Col>
+                                                    </Row>
+                                                    <CSSTransition in={this.state.visibilityFlag.nonPrescriptionLast5Years} timeout={500} classNames="my-node" unmountOnExit >
+                                                        <Row>
+                                                            <Col className="label-input-left">
+                                                                <label>Type of drugs used: </label>
+                                                                    <select name={tagName.nonPrescriptionLast5Years} value={this.state.formControls.nonPrescriptionLast5Years.value} onChange={this.changeHandler}  >
+                                                                        <option name={tagName.nonPrescriptionLast5Years} value="" ></option>
+                                                                        <option name={tagName.nonPrescriptionLast5Years} value="Sedatives" >Sedatives</option>
+                                                                        <option name={tagName.nonPrescriptionLast5Years} value="Amphetamines">Amphetamines</option>
+                                                                        <option name={tagName.nonPrescriptionLast5Years} value="Barbiturates">Barbiturates</option>
+                                                                        <option name={tagName.nonPrescriptionLast5Years} value="Opiates">Opiates</option>
+                                                                        <option name={tagName.nonPrescriptionLast5Years} value="Marijuana">Marijuana</option>
+                                                                        <option name={tagName.nonPrescriptionLast5Years} value="Hallucinogenic">Hallucinogenic</option>
+                                                                        <option name={tagName.nonPrescriptionLast5Years} value="NarcoticDrugs">Narcotic drugs</option>
+                                                                    </select>
+                                                            </Col>
+                                                        </Row>
+                                                    </CSSTransition>
 
 
                                                 </Container>
@@ -661,35 +766,36 @@ class QuoteForms extends React.Component {
                                                         <label>Have you had any of the following:</label>
                                                     </Row>
                                                     <Row>
-                                                        <Col>
-                                                            <input type="checkbox" name="healthIssue-1" value="GeneralInjuries" /> General Injuries
-                                                        </Col>
-                                                        <Col>
-                                                            <input type="checkbox" name="healthIssue-2" value="Disabilities" /> Disabilities
-                                                        </Col>
-                                                        <Col>
-                                                            <input type="checkbox" name="healthIssue-3" value="HIV" /> AIDS, HIV, Test for AIDS/HIV
-                                                        </Col>
-                                                        <Col>
-                                                            <input type="checkbox" name="healthIssue-4" value="RestrictionActivities" /> Restriction of Activities
-                                                        </Col>
+                                                        <label>
+                                                        <input type="checkbox" name="healthIssue-1" value="GeneralInjuries" /> 
+                                                        General Injuries</label>
                                                     </Row>
                                                     <Row>
-                                                        <Col>
-                                                            <label>have you been diagnosed, treated, teasted positive for, or given medical advice?</label>
-                                                        </Col>
-                                                        <Col>
-                                                            <label className="switch" >
-                                                                <input type="checkbox" value="diagnose" onClick={this.flagChangeHandler} />
-                                                                <span className="slider" />
-                                                            </label>
-                                                        </Col>
+                                                        <label>
+                                                        <input type="checkbox" name="healthIssue-2" value="Disabilities" /> 
+                                                        Disabilities</label>
                                                     </Row>
-                                                    <CSSTransition in={this.state.visibilityFlag.diagnose} timeout={500} classNames="my-node" unmountOnExit >
+                                                    <Row>
+                                                        <label>
+                                                        <input type="checkbox" name="healthIssue-3" value="HIV" /> 
+                                                        AIDS, HIV, or tested positive for AIDS/HIV</label>
+                                                    </Row>
+                                                    <Row>
+                                                        <label>
+                                                        <input type="checkbox" name="healthIssue-4" value="RestrictionActivities" /> 
+                                                        Restriction of Activities</label>
+                                                    </Row>
+                                                    <Row style={{paddingTop:30}}>
+                                                            <label>Have you been diagnosed, treated, tested positive for, or given medical advice?</label>
+                                                            <label className="switch" >
+                                                            <Switch value="diagnose" checked={this.state.visibilityFlag.diagnose} onChange={(e) => this.flagToggleSwitchHandler("diagnose",e)} />
+                                                            </label>
+                                                    </Row>
+                                                    {/* <CSSTransition in={this.state.visibilityFlag.diagnose} timeout={500} classNames="my-node" unmountOnExit >
                                                         <Row>
                                                             <TextInput type={tagType.text} name={tagName.diagnosedIssue} placeholder={this.state.formControls.diagnosedIssue.placeholder} onChange={this.changeHandler} />
                                                         </Row>
-                                                    </CSSTransition>
+                                                    </CSSTransition> */}
                                                 </Container>
                                             </div>
                                             </CSSTransition> 
@@ -699,9 +805,12 @@ class QuoteForms extends React.Component {
                                             <div className={this.state.currentPageNumber==5 ? "page-5" : "hide-page"}>
                                                 <Container>
                                                     <Row>
-                                                        <Col>
-                                                            <label>We see that you are cuttently perscribed, or have taken, these medications. Please confirm uncheck any that are not accurate</label>
-                                                        </Col>
+                                                        <label>We see that you are currently prescribed, or have taken, these medications</label>
+                                                    </Row>
+                                                    <Row>
+                                                        <label>Please confirm:</label>   
+                                                    </Row>
+                                                    <Row>
                                                         <Col style={{paddingLeft:20}}>
                                                             <Row>
                                                                 <label>
@@ -729,16 +838,19 @@ class QuoteForms extends React.Component {
                                                             </Row>
                                                         </Col>
                                                     </Row>
+                                                    <Row style={{paddingTop:20}}>
+                                                        <label>Add additional medication you are currently taking:</label>
+                                                    </Row>
                                                     {this.state.medicationHistory.map((obj, idx) => {
                                                             let medicationId = `Medication-${idx}`;
                                                             return (
-                                                               
                                                                 <Row key={idx}>
                                                                     <Col>
-                                                                        <label key={medicationId}>Medication #{idx} &nbsp;</label>
-                                                                    </Col>
-                                                                    <Col>
-                                                                        <input type="text" name={medicationId} placeholder={obj.detail } size="35"/>  
+                                                                        <label key={medicationId}>Medication #{idx} 
+                                                                        <input type="text" name={medicationId} value={this.state.medicationHistory[idx].perscription} onChange={(e)=>this.handleAdditionalMedication(idx,e)} size="35"/>
+                                                                        </label>  
+                                                                        <button type="button" id="button-close" onClick={(e)=>this.removeMedicationHistory(idx,e)}>x</button>
+                                                                        {/* <a id="button-close" onClick={(e)=>this.removeMedicationHistory(idx,e)}/> */}
                                                                     </Col>
                                                                 </Row>
 
@@ -761,7 +873,7 @@ class QuoteForms extends React.Component {
                                                     <Row>
                                                         <label>Are these medicaiton related to any of the following conditions?</label>
                                                     </Row>
-                                                    <Row>
+                                                    <Row >
                                                         {/* first column */}
                                                         <Col>
                                                             <Row>
@@ -769,15 +881,15 @@ class QuoteForms extends React.Component {
                                                                     <input type="checkbox" name="condition-1" value="aneurysm" />
                                                                 </Col>
                                                                 <Col >
-                                                                    <label>Aneurysm</label>
+                                                                    <label className="borderexample ">Aneurysm</label>
                                                                 </Col>
                                                             </Row>
                                                             <Row>
                                                                 <Col lg={1}>
-                                                                    <input type="checkbox" name="condition-2" value="irregularHeartBeat" onChange={this.flagChangeHandler}/>
+                                                                    <input type="checkbox" name="condition-2" value="irregularHeartBeat"  onChange={this.flagChangeHandler}/>
                                                                 </Col>
                                                                 <Col>
-                                                                    <label>Irregular Hear Beat</label>
+                                                                    <label className="borderexample ">Irregular Hear Beat</label>
                                                                 </Col>
                                                             </Row>
                                                             <Row>
@@ -785,7 +897,7 @@ class QuoteForms extends React.Component {
                                                                     <input type="checkbox" name="condition-3" value="bicuspidAorticValve" />
                                                                 </Col>
                                                                 <Col>
-                                                                    <label>bicuspidAorticValve</label>
+                                                                    <label className="borderexample ">bicuspidAorticValve</label>
                                                                 </Col>
                                                             </Row>
                                                             <Row>
@@ -793,7 +905,7 @@ class QuoteForms extends React.Component {
                                                                     <input type="checkbox" name="condition-4" value="coarctationOfAorta" />
                                                                 </Col>
                                                                 <Col>
-                                                                    <label>Coarctation of Aorta</label>
+                                                                    <label className="borderexample ">Coarctation of Aorta</label>
                                                                 </Col>
                                                             </Row>
                                                             <Row>
@@ -801,7 +913,7 @@ class QuoteForms extends React.Component {
                                                                     <input type="checkbox" name="condition-5" value="pericarditis" />
                                                                 </Col>
                                                                 <Col>
-                                                                    <label>Pericarditis</label>
+                                                                    <label className="borderexample ">Pericarditis</label>
                                                                 </Col>
                                                             </Row>
                                                             <Row>
@@ -809,7 +921,7 @@ class QuoteForms extends React.Component {
                                                                     <input type="checkbox" name="condition-6" value="chestPain" />
                                                                 </Col>
                                                                 <Col>
-                                                                    <label>Chest Pain or Pressure in Chest</label>
+                                                                    <label className="borderexample ">Chest Pain or Pressure in Chest</label>
                                                                 </Col>
                                                             </Row>
                                                             <Row>
@@ -817,7 +929,7 @@ class QuoteForms extends React.Component {
                                                                     <input type="checkbox" name="condition-7" value="heartValveAbnormality" />
                                                                 </Col>
                                                                 <Col >
-                                                                    <label>Heart Valve Abnormality</label>
+                                                                    <label className="borderexample ">Heart Valve Abnormality</label>
                                                                 </Col>
                                                             </Row>
                                                         </Col>
@@ -828,7 +940,7 @@ class QuoteForms extends React.Component {
                                                                     <input type="checkbox" name="condition-8" value="heartFailure" />
                                                                 </Col>
                                                                 <Col>
-                                                                    <label>Heart Failure</label>
+                                                                    <label className="borderexample ">Heart Failure</label>
                                                                 </Col>
                                                             </Row>
                                                             <Row>
@@ -836,7 +948,7 @@ class QuoteForms extends React.Component {
                                                                     <input type="checkbox" name="condition-9" value="highBloodPressure"/>
                                                                 </Col>
                                                                 <Col>
-                                                                    <label>High Blood Pressure</label>
+                                                                    <label className="borderexample ">High Blood Pressure</label>
                                                                 </Col>
                                                             </Row>
                                                             <Row>
@@ -844,7 +956,7 @@ class QuoteForms extends React.Component {
                                                                     <input type="checkbox" name="condition-10" value="aorticStenosis" />
                                                                 </Col>
                                                                 <Col>
-                                                                    <label>Aortic Stenosis</label>
+                                                                    <label className="borderexample ">Aortic Stenosis</label>
                                                                 </Col>
                                                             </Row>
                                                             <Row>
@@ -852,7 +964,7 @@ class QuoteForms extends React.Component {
                                                                     <input type="checkbox" name="condition-11" value="endocartitis" />
                                                                 </Col>
                                                                 <Col>
-                                                                    <label>Endocarditis</label>
+                                                                    <label className="borderexample ">Endocarditis</label>
                                                                 </Col>
                                                             </Row>
                                                             <Row>
@@ -860,7 +972,7 @@ class QuoteForms extends React.Component {
                                                                     <input type="checkbox" name="condition-12" value="heartAttack" onChange={this.flagChangeHandler}/>
                                                                 </Col>
                                                                 <Col>
-                                                                    <label>Heart Attack</label>
+                                                                    <label className="borderexample ">Heart Attack</label>
                                                                 </Col>
                                                             </Row>
                                                             <Row>
@@ -868,7 +980,7 @@ class QuoteForms extends React.Component {
                                                                     <input type="checkbox" name="condition-13" value="mitralValvaProlspse" />
                                                                 </Col>
                                                                 <Col>
-                                                                    <label>Mitral Valve Prolapse (MVP)</label>
+                                                                    <label className="borderexample ">Mitral Valve Prolapse (MVP)</label>
                                                                 </Col>
                                                             </Row>
                                                             <Row>
@@ -876,7 +988,7 @@ class QuoteForms extends React.Component {
                                                                     <input type="checkbox" name="condition-14" value="aorticInsufficiency" />
                                                                 </Col>
                                                                 <Col >
-                                                                    <label>Aortic Insufficient</label>
+                                                                    <label className="borderexample ">Aortic Insufficient</label>
                                                                 </Col>
                                                             </Row>
                                                         </Col>
@@ -887,7 +999,7 @@ class QuoteForms extends React.Component {
                                                                     <input type="checkbox" name="condition-15" value="murmur" />
                                                                 </Col>
                                                                 <Col>
-                                                                    <label>Murmur</label>
+                                                                    <label className="borderexample ">Murmur</label>
                                                                 </Col>
                                                             </Row>
                                                             <Row>
@@ -895,7 +1007,7 @@ class QuoteForms extends React.Component {
                                                                     <input type="checkbox" name="condition-16" value="mitralStenosis"/>
                                                                 </Col>
                                                                 <Col>
-                                                                    <label>Mitral Stenosis</label>
+                                                                    <label className="borderexample ">Mitral Stenosis</label>
                                                                 </Col>
                                                             </Row>
                                                             <Row>
@@ -903,7 +1015,7 @@ class QuoteForms extends React.Component {
                                                                     <input type="checkbox" name="condition-17" value="cardiomyopathy" />
                                                                 </Col>
                                                                 <Col>
-                                                                    <label>Cardiomyopathy</label>
+                                                                    <label className="borderexample ">Cardiomyopathy</label>
                                                                 </Col>
                                                             </Row>
                                                             <Row>
@@ -911,7 +1023,7 @@ class QuoteForms extends React.Component {
                                                                     <input type="checkbox" name="condition-18" value="tetralogyOfFallot" />
                                                                 </Col>
                                                                 <Col>
-                                                                    <label>Tetralogy of Fallot</label>
+                                                                    <label className="borderexample ">Tetralogy of Fallot</label>
                                                                 </Col>
                                                             </Row>
                                                             <Row>
@@ -919,7 +1031,7 @@ class QuoteForms extends React.Component {
                                                                     <input type="checkbox" name="condition-19" value="heartEnlargement"/>
                                                                 </Col>
                                                                 <Col>
-                                                                    <label>Heart Enlargement</label>
+                                                                    <label className="borderexample ">Heart Enlargement</label>
                                                                 </Col>
                                                             </Row>
                                                             <Row>
@@ -927,7 +1039,7 @@ class QuoteForms extends React.Component {
                                                                     <input type="checkbox" name="condition-20" value="pacemaker" onChange={this.flagChangeHandler}/>
                                                                 </Col>
                                                                 <Col>
-                                                                    <label>Pacemaker</label>
+                                                                    <label className="borderexample ">Pacemaker</label>
                                                                 </Col>
                                                             </Row>
                                                             <Row>
@@ -935,16 +1047,27 @@ class QuoteForms extends React.Component {
                                                                     <input type="checkbox" name="condition-21" value="congenitalCardiac" />
                                                                 </Col>
                                                                 <Col >
-                                                                    <label>Congenital Cardiac</label>
+                                                                    <label className="borderexample ">Congenital Cardiac</label>
                                                                 </Col>
                                                             </Row>
                                                         </Col>
+                                                    </Row >
+                                                    <Row>
+                                                        <button className={this.state.visibilityFlag.addMoreConditions? "button-click-after":"button-click-before"} value="addMoreConditions" onClick={this.flagChangeHandler}>None of above </button>
                                                     </Row>
+                                                    <CSSTransition in={this.state.visibilityFlag.addMoreConditions} timeout={500} classNames="my-node" unmountOnExit >
+                                                        <Row>
+                                                            <label>
+                                                                Additional conditions you want to tell us
+                                                                <input type="text"/> 
+                                                            </label>
+                                                        </Row>
+                                                    </CSSTransition>
 
                                                     {/* if irregularHeartBeat Clicked */}
                                                     <CSSTransition in={this.state.visibilityFlag.irregularHeartBeat} timeout={500} classNames="my-node" unmountOnExit >
-                                                        <Container>
-                                                            <Row>
+                                                        <Container style={{paddingTop:20}} >
+                                                            <Row >
                                                                 <label>What type of symptom(s) ? please select all</label>
                                                             </Row>
                                                             <Row>
@@ -988,11 +1111,10 @@ class QuoteForms extends React.Component {
                                                                 
                                                         </Container>
                                                         </CSSTransition>
-                                                    }
 
                                                     {/* if hospitalization is clicked in irregular heatbeat */}
                                                     <CSSTransition in={this.state.visibilityFlag.irregularHeartBeatHospitalized} timeout={500} classNames="my-node" unmountOnExit >
-                                                        <Container>
+                                                        <Container style={{paddingTop:20}}>
                                                             <Row>
                                                                 <Col>Hospitalized From <input type="date" /> to <input type="date" /></Col>
                                                                 <Col>Physician's Name: <input className="underlineText" type="text" /> <button value="search" type="button" >search</button> </Col>
@@ -1018,9 +1140,9 @@ class QuoteForms extends React.Component {
                                                         </Container>
                                                         </CSSTransition>
                                                     
-                                                    <CSSTransition in={this.state.visibilityFlag.pacemaker} timeout={500} classNames="my-node" unmountOnExit >
+                                                    <CSSTransition  in={this.state.visibilityFlag.pacemaker} timeout={500} classNames="my-node" unmountOnExit >
                                                     {/* expand if packmaker clicked */}
-                                                        <Container>
+                                                        <Container style={{paddingTop:20}}>
                                                             <Row>
                                                                 <Col>
                                                                     <Row>
@@ -1029,7 +1151,7 @@ class QuoteForms extends React.Component {
                                                                         </label>
                                                                     </Row>
                                                                     <Row>
-                                                                        <label>any diagnosis of following: sick sinus syndrome, carotid sinus syndrom, heart blocks, or post-cardiac surgery arrhythmia?
+                                                                        <label >any diagnosis of following: sick sinus syndrome, carotid sinus syndrom, heart blocks, or post-cardiac surgery arrhythmia?
                                                                     <label className="switch" >
                                                                                 <input type="checkbox" />
                                                                                 <span className="slider" />
@@ -1082,6 +1204,11 @@ class QuoteForms extends React.Component {
                                     </div>
                                 </Col>
                                 
+                                {/* left arrow */}
+                                <Col xs={1} className="noPadding">
+                                        <button className="button button-prev" onClick={this.pageHandler} value="previousPage"><i className="left"></i></button>
+
+                                </Col>
                                 {/* right arrow */}
                                 <Col xs={1} className="noPadding">
                                         <button className="button button-next " onClick={this.pageHandler} value="nextPage"><i className="right"></i></button>
