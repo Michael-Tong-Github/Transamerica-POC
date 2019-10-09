@@ -36,33 +36,21 @@ function App() {
 
 
     <React.Fragment>
+      
+
       <Router>
         {/*  */}
-        <style type="text/css">
-          {`
-          #loginButton {
-            margin-left: 30px;
-            }
-
-          #transamericaNavbarBrand{
-            margin-bottom:10px;
-          }
-
-          #Navbar{
-              position: sticky;
-              top: 0;
-          }
-          `}
-        </style>
-
-
+        
         {/* Navbar Component  */}
-        <TANavbar />
+      <TANavbar />
 
 
-        <Route exact path="/" component={QuoteForms} />
-        <Route path="/about" component={Test} />
+        
 
+        <Switch>
+          <Route exact path="/" component={QuoteForms} />
+          <Route path="/about" component={Test} />
+        </Switch>
 
       </Router>
     </React.Fragment >

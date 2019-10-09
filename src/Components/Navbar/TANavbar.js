@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import {LinkContainer} from 'react-router-bootstrap';
-
+import './TANavbar.css';
 
 //React-Bootstrap Component Import Here
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -20,10 +20,29 @@ import { Form, FormControl, Button,Badge, Container, Col, Row, NavItem } from 'r
 import TransamericaLogo from '../../Assets/transamerica-logo-red-pyramid_tcm145-100915.svg';
 
 function TANavbar() {
-    
+    console.log(window.location.href);
+    console.log(typeof(window.location.href));
+
+    console.log(process.env.REACT_APP_Front_End_URL);
+    console.log(typeof(process.env.REACT_APP_Front_End_URL));
+    console.log(window.location.href == process.env.REACT_APP_Front_End_URL);
  
     return (
+        <React.Fragment>
        
+        <style type="text/css">
+          {`
+          #loginButton {
+            margin-left: 30px;
+            }
+
+          #transamericaNavbarBrand{
+            margin-bottom:10px;
+          }
+
+          
+          `}
+        </style>
 
         <Navbar   bg="light" expand="lg" id="Navbar">
            
@@ -57,6 +76,8 @@ function TANavbar() {
             <Button variant="danger" id="loginButton">Login</Button>
 
         </Navbar>
+
+        </React.Fragment>
 
 
 

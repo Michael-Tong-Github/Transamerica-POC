@@ -293,8 +293,10 @@ class QuoteForms extends React.Component {
 
     //handle flag state, to show/hide certin sections
 
+   
+
     flagChangeHandler = event => {
-        event.preventDefault();
+        
 
         // console.log(event);
         // console.log(event.target);
@@ -401,8 +403,6 @@ class QuoteForms extends React.Component {
             this.setState({currentPageNumber: this.state.currentPageNumber + 1});
         }else if(event.target.value == "previousPage"&& this.state.currentPageNumber>1){
             this.setState({currentPageNumber: this.state.currentPageNumber- 1});
-        }else{
-            console.log("no");
         }
 
       }
@@ -432,8 +432,6 @@ class QuoteForms extends React.Component {
                                 <Col xs={10} className="CenterFormRow">
                                     <div className="center-form">
                                         <form onSubmit={this.formSubmitHandler}>
-                                        
-
                                             {/* page-1 General Health */}
                                             <CSSTransition in={this.state.currentPageNumber==1 } timeout={500} classNames="my-node"  unmountOnExit>
                                             <div className={this.state.currentPageNumber==1 ? "page-1" : "hide-page"}> 
@@ -668,9 +666,20 @@ class QuoteForms extends React.Component {
                                                         </Col>
                                                     </Row>
                                                     <CSSTransition in={this.state.visibilityFlag.military} timeout={500} classNames="my-node" unmountOnExit >
-                                                        <Row>
-                                                            <TextInput type={tagType.text} name={tagName.militaryExperience} placeholder={this.state.formControls.militaryExperience.placeholder} onChange={this.changeHandler} />
-                                                        </Row>
+                                                        <div>
+                                                            <Row style={{paddingBottom:10}}>
+                                                                <select >
+                                                                    <option ></option>
+                                                                    <option >Infantry</option>
+                                                                    <option >Navy</option>
+                                                                    <option >Air Force</option>
+                                                                    <option >Reserved</option>
+                                                                </select>
+                                                            </Row>
+                                                            <Row>
+                                                                <TextInput type={tagType.text} name={tagName.militaryExperience} placeholder={this.state.formControls.militaryExperience.placeholder} onChange={this.changeHandler} />
+                                                            </Row>
+                                                        </div>
                                                     </CSSTransition>
 
                                                     
@@ -886,7 +895,8 @@ class QuoteForms extends React.Component {
                                                             </Row>
                                                             <Row>
                                                                 <Col lg={1}>
-                                                                    <input type="checkbox" name="condition-2" value="irregularHeartBeat"  onChange={this.flagChangeHandler}/>
+                                                                    <input type="checkbox" name="condition-2" value="irregularHeartBeat" checked={this.state.visibilityFlag.irregularHeartBeat} onChange={this.flagChangeHandler} />
+                                                                    {/* <input type="checkbox" value={issue} name={checkBoxName} checked={this.state.GeneralHealthIssues.includes(issue)} onChange={(e)=> this.generalHealthChangeHandler(idx,e)} /> */}
                                                                 </Col>
                                                                 <Col>
                                                                     <label className="borderexample ">Irregular Hear Beat</label>
@@ -1133,7 +1143,7 @@ class QuoteForms extends React.Component {
                                                         </CSSTransition>
 
 
-                                                        <CSSTransition in={this.state.visibilityFlag.heartAttack} timeout={500} classNames="my-node" unmountOnExit >
+                                                    <CSSTransition in={this.state.visibilityFlag.heartAttack} timeout={500} classNames="my-node" unmountOnExit >
                                                     {/* expand if  Heart Attack clicked */}
                                                         <Container>
                                                             <Row>skipped for now </Row>
@@ -1194,9 +1204,6 @@ class QuoteForms extends React.Component {
                                                         </Container>
                                                         </CSSTransition>
                                                     
-                                                    <div className="submit-button">
-                                                        <button className="button">Submit</button>
-                                                    </div>
                                                 </Container>
                                             </div>
                                             </CSSTransition> 
@@ -1207,12 +1214,19 @@ class QuoteForms extends React.Component {
                                 {/* left arrow */}
                                 <Col xs={1} className="noPadding">
                                         <button className="button button-prev" onClick={this.pageHandler} value="previousPage"><i className="left"></i></button>
+                                </Col>
 
-                                </Col>
                                 {/* right arrow */}
-                                <Col xs={1} className="noPadding">
-                                        <button className="button button-next " onClick={this.pageHandler} value="nextPage"><i className="right"></i></button>
-                                </Col>
+                                {this.state.currentPageNumber==6 ? 
+                                    <Col xs={1} className="noPadding">
+                                        <button className="button button-prev">Submit</button>
+                                    </Col>
+                                    : 
+                                    <Col xs={1} className="noPadding">
+                                            <button className="button button-next " onClick={this.pageHandler} value="nextPage"><i className="right"></i></button>
+                                    </Col>
+                                    
+                                }
                             </Row>
                                 
                             

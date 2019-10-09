@@ -372,3 +372,6 @@ i {
     border-image: initial;
 }
 
+.centering-container{
+  padding-top: 66px; 
+}
