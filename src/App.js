@@ -25,10 +25,10 @@ console.disableYellowBox = true;
 
 function App() {
 
-  console.log(window.location.href);
-  console.log(typeof (window.location.href));
+  // console.log(window.location.href);
+  // console.log(typeof (window.location.href));
+  // console.log(process.env.REACT_APP_Front_End_URL);
 
-  console.log(process.env.REACT_APP_Front_End_URL);
   let disabled = true;
 
   return (

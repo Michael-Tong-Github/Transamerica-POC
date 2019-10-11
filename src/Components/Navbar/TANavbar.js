@@ -20,12 +20,11 @@ import { Form, FormControl, Button,Badge, Container, Col, Row, NavItem } from 'r
 import TransamericaLogo from '../../Assets/transamerica-logo-red-pyramid_tcm145-100915.svg';
 
 function TANavbar() {
-    console.log(window.location.href);
-    console.log(typeof(window.location.href));
-
-    console.log(process.env.REACT_APP_Front_End_URL);
-    console.log(typeof(process.env.REACT_APP_Front_End_URL));
-    console.log(window.location.href == process.env.REACT_APP_Front_End_URL);
+    // console.log(window.location.href);
+    // console.log(typeof(window.location.href));
+    // console.log(process.env.REACT_APP_Front_End_URL);
+    // console.log(typeof(process.env.REACT_APP_Front_End_URL));
+    // console.log(window.location.href === process.env.REACT_APP_Front_End_URL);
  
     return (
         <React.Fragment>
@@ -55,7 +54,7 @@ function TANavbar() {
             <Nav style={{fontSize:15}} className="mr-auto">
 
                 <LinkContainer to="/">
-                    <Nav.Link disabled={window.location.href == process.env.REACT_APP_Front_End_URL ? true : false}>Life Insurance Quote</Nav.Link>
+                    <Nav.Link disabled={window.location.href === process.env.REACT_APP_Front_End_URL ? true : false}>Life Insurance Quote</Nav.Link>
                 </LinkContainer>
                 <LinkContainer to="/WhatWeOffer">
                     <Nav.Link>What We Offer</Nav.Link>
